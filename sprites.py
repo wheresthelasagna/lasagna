@@ -18,9 +18,16 @@ class Player(pg.sprite.Sprite):
 		self.acc = vec(0,0)
 		keys = pg.key.get_pressed()
 		if keys[pg.K_LEFT]:
-			self.acc.x = -.5
+			self.acc.x = -PLAYER_ACC
 		if keys[pg.K_RIGHT]:
-			self.acc.x = .5
+			self.acc.x = PLAYER_ACC
 		
-		self.vel += self.acc
+		self.acc += self.vel * PLAYER_FRICTION #friction
+		self.vel += self.acc #equation of motion
 		self.pos += self.vel + .5 * self.acc
+		if self.pos.x > WIDTH: #set wrap
+			self.pos.x = 0
+		if self.pos.x < 0:
+			self.pos.x = WIDTH
+		
+		self.rect.center = self.pos
